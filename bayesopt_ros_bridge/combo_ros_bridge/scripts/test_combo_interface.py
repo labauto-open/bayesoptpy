@@ -15,6 +15,7 @@ def main():
 
     # Generate combo
     ci = ComboInterface(combo, candidates_path, policy_load_dir, policy_save_dir, use_saved_policy=False)
+    ci.start_bayesopt()
 
     # Write combo operation below
     ## Following procedure is important for correct generation of result data.
