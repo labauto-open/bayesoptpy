@@ -31,10 +31,10 @@ sudo pip3 install matplotlib
 ## Usage
 ### physbo_interface
 - test program node for only PHYSBO
-- load test candidates (data/candidates.csv)
+- load test candidates (examples/data/candidates.csv)
 - visualize mean, std and scores(acquisition functions)
 ```
-cd scripts
+cd examples
 ./test_physbo_interface.py
 ```
 
@@ -45,6 +45,13 @@ cd scripts
 ```
 roslaunch physbo_ros_bridge physbo_ros_bridge.launch
 ```
+and then command the node from another terminal using ROS msgs.
+```
+rostopic pub -1 /bayesopt_ros_bridge/start_param_search std_msgs/Bool "data: true"
+rostopic pub -1 /bayesopt_ros_bridge/result_to_bayesopt std_msgs/Float32 "data: 0.5"
+```
+repeat this process several times, and then terminate the terminal by Ctrl+C.
+
 
 ### memo
 - Result and history data are saved in the dir specified by `policy_save_dir` (`data` dir as defalult).
