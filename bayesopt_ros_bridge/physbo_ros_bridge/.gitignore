@@ -1,3 +1,4 @@
 *.~
 *.pyc
-data
+examples/data/chosen_actions.csv
+examples/data/result

@@ -2,8 +2,8 @@
 <launch>
   <arg name="pub_rate"         default="1"/>
   <arg name="resume_data_dir"  default="False"/>
-  <arg name="candidates_path"  default="$(find physbo_ros_bridge)/data/test_candidates.csv"/>
-  <arg name="data_save_dir"    default="$(find physbo_ros_bridge)/data/test_result"/>
+  <arg name="candidates_path"  default="$(find physbo_ros_bridge)/examples/data/candidates.csv"/>
+  <arg name="data_save_dir"    default="$(find physbo_ros_bridge)/examples/data/result"/>
   <arg name="config_file"      default="$(find physbo_ros_bridge)/config/bridge_config_physbo.yaml"/>
 
   <node name="physbo_ros_bridge" pkg="physbo_ros_bridge" type="physbo_ros_bridge_node.py" output="screen">
