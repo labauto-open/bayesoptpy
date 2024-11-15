@@ -54,9 +54,26 @@ class SerialInterface():
 
 
     def readline(self):
-        return self.client.readline()
+        return self.client.readline()  # byte
 
 
-    def readline_str(self):
+    def readline_with_decode(self, code='utf-8', error_option='strict'):
+        '''
+        arg:
+        - code: utf-8, ascii or shift_jis
+        - error_option: strict, replace, ignore or backslashreplace'
+        '''
         rcv_data = self.client.readline()
-        return rcv_data.decode()  # byte to str
+        return rcv_data.decode(code, error_option)
+
+
+    def readline_str(self, error_option='strict'):
+        return self.readline_with_decode('utf-8', error_option)  # byte to utf-8(str)
+
+
+    def readline_ascii(self, error_option='strict'):
+        return self.readline_with_decode('ascii', error_option)  # byte to ascii
+
+
+    def readline_shiftjis(self, error_option='strict'):
+        return self.readline_with_decode('shift_jis', error_option)  # byte to shift_jis
