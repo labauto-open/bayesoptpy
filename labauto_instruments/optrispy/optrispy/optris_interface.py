@@ -19,7 +19,7 @@ class OptrisInterface(SerialInterface):
         super().__init__(baudrate=115200, timeout=1)
 
 
-    def open_optris(self):
+    def connect_optris(self):
         self.open()
         time.sleep(0.5)
 

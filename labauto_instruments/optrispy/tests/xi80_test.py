@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from optris_ros.optris_interface import OptrisInterface
+from optrispy.optris_interface import OptrisInterface
 
 
 if __name__ ==  "__main__":
     xi80 = OptrisInterface()
-    xi80.open_optris()
+    xi80.connect_optris()
 
     temp = xi80.get_temperature()
     print('Temp [degC]:', temp)
