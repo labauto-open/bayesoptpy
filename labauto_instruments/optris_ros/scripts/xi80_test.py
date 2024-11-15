@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from optris_ros.optris_driver import OptrisDriver
+from optris_ros.optris_interface import OptrisInterface
 
 
 if __name__ ==  "__main__":
-    xi80 = OptrisDriver()
+    xi80 = OptrisInterface()
     xi80.open_optris()
 
     temp = xi80.get_temperature()
@@ -30,7 +30,7 @@ if __name__ ==  "__main__":
     print('Transmissivity:', transmissivity)
 
     ambient_temp = xi80.get_ambient_temperature()
-    print('Ambient_temp:', ambient_temp)
+    print('Ambient_temp [degC]:', ambient_temp)
 
     sn = xi80.get_serial_number()
     print('Serial number:', sn)
@@ -57,10 +57,10 @@ if __name__ ==  "__main__":
     print('Range index:', range_index)
 
     range_min_0 = xi80.get_range_min(0)
-    print('Range min(0):', range_min_0)
+    print('Range min(0) [degC]:', range_min_0)
 
     range_max_0 = xi80.get_range_max(0)
-    print('Range max(0):', range_max_0)
+    print('Range max(0) [degC]:', range_max_0)
 
     fwver = xi80.get_fwver()
     print('FWver:', fwver)

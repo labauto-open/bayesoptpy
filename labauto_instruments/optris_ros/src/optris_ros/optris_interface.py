@@ -14,7 +14,7 @@ Memo
   - set commands
 '''
 
-class OptrisDriver(SerialInterface):
+class OptrisInterface(SerialInterface):
     def __init__(self):
         super().__init__(baudrate=115200, timeout=1)
 
@@ -36,25 +36,26 @@ class OptrisDriver(SerialInterface):
         return data
 
 
+    def convert_temp_data_to_value(self, temp_data):
+        # raw temp_data includes 0xb0 code as default which means 'deg' symbol (small circle)
+        return float(temp_data.replace('C', ''))
+
+
     def get_temperature(self):
         '''
         Description:
           Read temperature of main measure area
         '''
         cmd = '?T\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')  #  0xb0 code is added as default which means 'deg' symbol (small circle)
-        value = value_with_deg.replace('C', '')
-
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_temperature_index(self, index):
         'Read temperature of measure area with index i'
         cmd = '?T('+str(index)+')\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
+
 
 
     def get_chip_temperature(self):
@@ -63,10 +64,8 @@ class OptrisDriver(SerialInterface):
           Read chip temperature
         '''
         cmd = '?C\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_flag_temperature(self):
@@ -75,10 +74,8 @@ class OptrisDriver(SerialInterface):
           Read flag temperature
         '''
         cmd = '?F\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_internal_temperature(self):
@@ -87,10 +84,8 @@ class OptrisDriver(SerialInterface):
           Read internal temperature
         '''
         cmd = '?I\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_emissivity(self):
@@ -99,10 +94,8 @@ class OptrisDriver(SerialInterface):
           Read fixed emissivity value
         '''
         cmd = '?E\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return float(self.get_data_by_cmd(cmd))
 
 
     def get_transmissivity(self):
@@ -111,10 +104,8 @@ class OptrisDriver(SerialInterface):
           Read fixed transmissivity value
         '''
         cmd = '?XG\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return float(self.get_data_by_cmd(cmd))
 
 
     def get_ambient_temperature(self):
@@ -123,10 +114,8 @@ class OptrisDriver(SerialInterface):
           Read fixed ambient temperature value
         '''
         cmd = '?A\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_serial_number(self):
@@ -135,9 +124,8 @@ class OptrisDriver(SerialInterface):
           Read serial number of imager
         '''
         cmd = '?SN\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_measure_area_count(self):
@@ -146,9 +134,8 @@ class OptrisDriver(SerialInterface):
           Read count of measure areas
         '''
         cmd = '?AreaCount\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_area_mode(self, index):
@@ -159,9 +146,8 @@ class OptrisDriver(SerialInterface):
           Id: 0(Min), 1(Max), 2(Average), 3(Distribution)
         '''
         cmd = '?AreaMode('+str(index)+')\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_area_use_emissivity(self, index):
@@ -172,9 +158,8 @@ class OptrisDriver(SerialInterface):
           0=not used, 1=used
         '''
         cmd = '?AreaUseEmissivity('+str(index)+')\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_area_emissivity(self, index):
@@ -183,9 +168,8 @@ class OptrisDriver(SerialInterface):
           Read custom emissivity x of area i
         '''
         cmd = '?AreaEmissivity('+str(index)+')\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return float(self.get_data_by_cmd(cmd))
 
 
     def get_area_distribution_mode_range(self, index):
@@ -194,9 +178,8 @@ class OptrisDriver(SerialInterface):
           Read the distribution range x1,x2 of area i
         '''
         cmd = '?AreaDistributionModeRange('+str(index)+')\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return self.get_data_by_cmd(cmd)
 
 
     def get_range_count(self):
@@ -205,9 +188,8 @@ class OptrisDriver(SerialInterface):
           Read count of existing temperature ranges
         '''
         cmd = '?RangeCount\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_range_index(self):
@@ -216,9 +198,8 @@ class OptrisDriver(SerialInterface):
           Read the index of the current temperature range
         '''
         cmd = '?RangeIndex\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_range_min(self, index):
@@ -227,10 +208,8 @@ class OptrisDriver(SerialInterface):
           Read the low temperature of the temperature range with index i
         '''
         cmd = '?RangeMin('+str(index)+')\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_range_max(self, index):
@@ -239,10 +218,8 @@ class OptrisDriver(SerialInterface):
           Read the high temperature of the temperature range with index i
         '''
         cmd = '?RangeMax('+str(index)+')\r\n'
-        value_with_deg = self.get_data_by_cmd(cmd, 'ignore')
-        value = value_with_deg.replace('C', '')
 
-        return value
+        return self.convert_temp_data_to_value(self.get_data_by_cmd(cmd, 'ignore'))
 
 
     def get_fwver(self):
@@ -251,9 +228,8 @@ class OptrisDriver(SerialInterface):
           Read the firmware and hardware version of the imager
         '''
         cmd = '?FWVer\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return self.get_data_by_cmd(cmd)
 
 
     def get_flag(self):
@@ -264,9 +240,9 @@ class OptrisDriver(SerialInterface):
           0 = flag is open, 1 = flag is closed
         '''
         cmd = '?Flag\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
+
 
 
     def get_focusmotor_min_pos(self):
@@ -275,9 +251,8 @@ class OptrisDriver(SerialInterface):
           Get minimum position of Xi's focus motor
         '''
         cmd = '?FocusmotorMinPos\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_focusmotor_max_pos(self):
@@ -286,9 +261,8 @@ class OptrisDriver(SerialInterface):
           Get maximum position of Xi's focus motor
         '''
         cmd = '?FocusmotorMaxPos\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
 
 
     def get_focusmotor_pos(self):
@@ -297,6 +271,5 @@ class OptrisDriver(SerialInterface):
           Get actual position of Xi's focus motor
         '''
         cmd = '?FocusmotorPos\r\n'
-        value = self.get_data_by_cmd(cmd)
 
-        return value
+        return int(self.get_data_by_cmd(cmd))
