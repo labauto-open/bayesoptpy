@@ -9,13 +9,10 @@ def main():
     rospy.init_node('xi80_ros_node', anonymous=True)
 
     xi80_ros = OptrisROS()
-    rate = rospy.Rate(10) # 10hz
 
     # Run publisher
     while not rospy.is_shutdown():
         xi80_ros.publish_temp()
-        #xi80_ros.publish_data()
-        rate.sleep()
 
 
 if __name__ ==  "__main__":
