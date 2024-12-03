@@ -56,7 +56,8 @@ def main():
     pi = PhysboInterface(candidates_path, policy_load_dir, policy_save_dir, use_saved_policy, search_score)
     bridge = PhysboROSBridge(pi, config, pub_rate, policy_save_dir)
 
-    # Run the bridge
+    # Start bayesopt and bridge
+    pi.start_bayesopt()
     bridge.run()
     rospy.spin()
 
