@@ -4,9 +4,19 @@
 - optrispy is used for obtaining temperature at the spesified area through the RS485 converter.
 
 # Installation & setup
-- Install SDK deb for optris_driver
+## Installation for optris_driver
+- Install SDK deb
 https://documentation.evocortex.com/libirimager2/html/Installation.html
-- plug both of thermography camera and RS485 converter to your computer.
+- build optris_driver
+  ```
+  cd ~/catkin_ws/src
+  git clone git@github.com:evocortex/optris_drivers.git
+  cd optris_drivers
+  catkin bt
+  ```
+
+## Hardware connection
+plug both of thermography camera and RS485 converter to your computer.
 
 
 # Sample program
