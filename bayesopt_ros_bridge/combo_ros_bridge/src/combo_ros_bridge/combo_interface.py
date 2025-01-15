@@ -126,16 +126,16 @@ class ComboInterface():
         self.is_search_completed = True
 
 
-    def search_next_param_bayes(self):
+    def search_next_param_bayes(self, **kwargs):
         print('Search next param by BAYES_OPT (score:', self.search_score, ')')
-        self.next_action = self.policy.bayes_search(max_num_probes=1, score=self.search_score)
+        self.next_action = self.policy.bayes_search(score=self.search_score, **kwargs)
         print(' Next index: {}'.format(self.next_action))
         print(' Next param: {}'.format(self.X[self.next_action][0]))
 
 
-    def search_next_param_random(self):
+    def search_next_param_random(self, **kwargs):
         print('Search next param by RANDOM search')
-        self.next_action = self.policy.random_search(max_num_probes=1)
+        self.next_action = self.policy.random_search(max_num_probes=1, **kwargs)
         print(' Next index: {}'.format(self.next_action))
         print(' Next param: {}'.format(self.X[self.next_action][0]))
 
