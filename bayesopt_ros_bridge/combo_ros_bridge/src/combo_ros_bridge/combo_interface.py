@@ -322,7 +322,7 @@ class ComboInterface():
         return next_param
 
 
-    def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml'):
+    def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml', overwrite=False):
         with open(candidates_config_path, 'r') as yml:
             config = yaml.load(yml)
             candidates_cfg = config['config']['candidates']
@@ -352,13 +352,18 @@ class ComboInterface():
             write_format += '%d,'
         write_format += '\n'
 
+        # generate candidates.csv
+        if overwrite: write_mode='w'
+        else: write_mode='x'
+
         try:
-            with open(self.candidates_path, mode='x') as f:
+            print('Generating %s from %s' % (self.candidates_path, candidates_config_path))
+            with open(self.candidates_path, mode=write_mode) as f:
                 f.write(candidates_label_str)
                 f.write('\n')
                 for i_list in iter.product(*param_value_list):  # unpack
                     f.write(write_format % i_list)
-                print('generate candidates.csv')
+                print('candidates is generated')
         except FileExistsError:
-            print('candidates.csv already exists')
+            print('candidates already exists')
             pass
