@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.0)
-project(physbo_ros_bridge)
+project(bayesopt_ros_bridge)
 
 find_package(catkin REQUIRED COMPONENTS
   std_msgs
@@ -17,6 +17,7 @@ catkin_package()
 
 catkin_install_python(
   PROGRAMS
+    scripts/combo_ros_bridge_node.py
     scripts/physbo_ros_bridge_node.py
   DESTINATION
     ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -16,4 +16,4 @@ config:
     topic_type: 'Float32MultiArray'
   #
   # bayesopt_interface config
-  acquisition_function: 'PI'
+  acquisition_function: 'EI'

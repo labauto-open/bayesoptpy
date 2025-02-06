@@ -3,8 +3,8 @@
 
 import os
 import rospy
-from physbo_ros_bridge.physbo_interface import PhysboInterface
-from physbo_ros_bridge.physbo_ros_bridge import PhysboROSBridge
+from bayesopt_if.physbo_interface import PhysboInterface
+from bayesopt_ros_bridge.physbo_ros_bridge import PhysboROSBridge
 
 
 def main():

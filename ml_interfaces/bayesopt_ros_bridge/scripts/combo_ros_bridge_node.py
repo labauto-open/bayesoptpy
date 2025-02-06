@@ -4,8 +4,8 @@
 import os
 import rospy
 import combo
-from combo_ros_bridge.combo_interface import ComboInterface
-from combo_ros_bridge.combo_ros_bridge import ComboROSBridge
+from bayesopt_if.combo_interface import ComboInterface
+from bayesopt_ros_bridge.combo_ros_bridge import ComboROSBridge
 
 
 def main():

@@ -3,7 +3,7 @@
 
 import rospy
 from std_msgs.msg import *
-from combo_ros_bridge.combo_ros_bridge import ComboROSBridge
+from bayesopt_ros_bridge.combo_ros_bridge import ComboROSBridge
 
 
 class PhysboROSBridge(ComboROSBridge):

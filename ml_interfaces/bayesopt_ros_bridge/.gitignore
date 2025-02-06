@@ -1,0 +1,5 @@
+*.~
+*.pyc
+examples/data/chosen_actions.csv
+examples/data/chosed_actions.csv
+examples/data/result

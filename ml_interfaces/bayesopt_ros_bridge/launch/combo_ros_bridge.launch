@@ -2,11 +2,11 @@
 <launch>
   <arg name="pub_rate"         default="1"/>
   <arg name="resume_data_dir"  default="False"/>
-  <arg name="candidates_path"  default="$(find combo_ros_bridge)/data/test_candidates.csv"/>
-  <arg name="data_save_dir"    default="$(find combo_ros_bridge)/data/test_result"/>
-  <arg name="config_file"      default="$(find combo_ros_bridge)/config/bridge_config_combo.yaml"/>
+  <arg name="candidates_path"  default="$(find bayesopt_ros_bridge)/examples/data/candidates.csv"/>
+  <arg name="data_save_dir"    default="$(find bayesopt_ros_bridge)/examples/data/result"/>
+  <arg name="config_file"      default="$(find bayesopt_ros_bridge)/config/bridge_config_combo.yaml"/>
 
-  <node name="combo_ros_bridge" pkg="combo_ros_bridge" type="combo_ros_bridge_node.py" output="screen">
+  <node name="combo_ros_bridge" pkg="bayesopt_ros_bridge" type="combo_ros_bridge_node.py" output="screen">
     <param name="pub_rate"         value="$(arg pub_rate)"/>
     <param name="resume_data_dir"  value="$(arg resume_data_dir)"/>
     <param name="candidates_path"  value="$(arg candidates_path)"/>
