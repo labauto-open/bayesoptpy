@@ -2,23 +2,13 @@
 
 bayesopt_ros_bridge is a package that includes bridge software to operate instance of bayesian optimization through ROS msgs.
 
-# Components
-- bayesopt_ros_bridge: base part
-- physbo_ros_bridge: bridge between PHYSBO and ROS  
-- combo_ros_bridge: bridge between COMBO and ROS  
-
-# Use Case
+## Use Case
 - Experimental parameter optimization using bayesian optimization during robot experiments
 - Integration of a ROS robot system with science experiments
 - Lab-automation
 
 
-# physbo_ros_bridge
-
-physbo_ros_bridge is a package that includes a bridge software to commanding PHYSBO through ROS msgs.
-
-
-### physbo_ros_bridge
+## physbo_ros_bridge
 - bridge node for communication between PHYSBO and ROS system
 - publish PHYSBO data to ROS system (e.g. next_param)
 - subscribe evaluation value or flags to write the value to PHYSBO
@@ -39,12 +29,7 @@ repeat this process several times, and then terminate the terminal by Ctrl+C.
   - The arg with `False` does not consider the existing data and learning history.
 
 
-# combo_ros_bridge
-
-combo_ros_bridge is a package that includes a bridge software to commanding COMBO through ROS msgs.
-
-
-### combo_ros_bridge
+## combo_ros_bridge
 - bridge node for communication between COMBO and ROS system
 - publish COMBO data to ROS system (e.g. next_param)
 - subscribe evaluation value or flags to write the value to COMBO
