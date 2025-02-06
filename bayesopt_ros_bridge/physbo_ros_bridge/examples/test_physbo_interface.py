@@ -22,6 +22,7 @@ def main():
 
     # Generate physbo
     pi = PhysboInterface(candidates_path, policy_load_dir, policy_save_dir, use_saved_policy=False, search_score='PI')
+    pi.start_bayesopt()
 
     # Procedure of search and register data to PHYSBO
     # - Following procedure is important for correct generation of result data.
