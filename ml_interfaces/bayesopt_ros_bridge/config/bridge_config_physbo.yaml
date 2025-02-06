@@ -1,0 +1,19 @@
+config:
+  # bridge config
+  # - define below according to data type of the experiment
+  #   - topic_name: ROS topic name
+  #   - topic_type: ROS std_msgs data type
+  ## subscriber
+  result:
+    topic_name: '/bayesopt_ros_bridge/result_to_bayesopt'
+    topic_type: 'Float32'
+  data_save_dir:
+    topic_name: '/bayesopt_ros_bridge/data_save_dir'
+    topic_type: 'String'
+  ## publisher
+  next_param:
+    topic_name: '/bayesopt_ros_bridge/next_param'
+    topic_type: 'Float32MultiArray'
+  #
+  # bayesopt_interface config
+  acquisition_function: 'EI'
