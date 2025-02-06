@@ -13,7 +13,7 @@ bayesopt_ros_bridge is a package that includes bridge software to operate instan
 - publish PHYSBO data to ROS system (e.g. next_param)
 - subscribe evaluation value or flags to write the value to PHYSBO
 ```
-roslaunch physbo_ros_bridge physbo_ros_bridge.launch
+roslaunch bayesopt_ros_bridge physbo_ros_bridge.launch
 ```
 and then command the node from another terminal using ROS msgs.
 ```
@@ -34,7 +34,7 @@ repeat this process several times, and then terminate the terminal by Ctrl+C.
 - publish COMBO data to ROS system (e.g. next_param)
 - subscribe evaluation value or flags to write the value to COMBO
 ```
-roslaunch combo_ros_bridge combo_ros_bridge.launch
+roslaunch bayesopt_ros_bridge combo_ros_bridge.launch
 ```
 
 ### memo
