@@ -3,15 +3,17 @@
 
 import os
 import random
+import sys
+
 import combo
-from combo_ros_bridge.combo_interface import ComboInterface
+from bayesopt_if.combo_interface import ComboInterface
 
 
 def main():
     # dir setting
-    candidates_path  = '../data/test_candidates.csv'
-    policy_load_dir = '../data/test_result'
-    policy_save_dir = '../data/test_result'
+    candidates_path  = './data/candidates.csv'
+    policy_load_dir = './data/load'
+    policy_save_dir = './data/result'
 
     # Generate combo
     ci = ComboInterface(combo, candidates_path, policy_load_dir, policy_save_dir, use_saved_policy=False)

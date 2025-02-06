@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import physbo
 import matplotlib.pyplot as plt
-from combo_ros_bridge.combo_interface import ComboInterface
+from .combo_interface import ComboInterface
 
 
 class PhysboInterface(ComboInterface):
