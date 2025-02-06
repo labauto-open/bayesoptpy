@@ -1,2 +1,2 @@
-# lab automation
+# LabAuto
 Software package for laboratory automation
