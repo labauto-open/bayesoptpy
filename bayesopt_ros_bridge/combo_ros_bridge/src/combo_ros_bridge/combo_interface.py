@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+import itertools as iter
 import os
 import sys
 import numpy as np
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
+import yaml
 
 PYTHON_VERSION = sys.version_info.major
 if PYTHON_VERSION == 2:
@@ -29,6 +31,7 @@ class ComboInterface():
         self.candidates_path = candidates_path
         self.policy_load_dir = policy_load_dir
         self.policy_save_dir = policy_save_dir
+        self.use_saved_policy = use_saved_policy
         self.search_mode = 0  # 0: random search, 1: bayes
         self.search_score = search_score  # score: PI, EI, TS
         self.is_write_completed = False
@@ -37,26 +40,21 @@ class ComboInterface():
         self.remaining_actions = None
         self.bayesopt = bayesopt
 
+
+    def start_bayesopt(self):
         # load csv
         self.load_dataset()
 
-        # calculation values
-        self.mean = np.zeros(len(self.X))
-        self.std = np.zeros(len(self.X))
-        self.score_PI = np.zeros(len(self.X))  # acquisition function
-        self.score_EI = np.zeros(len(self.X))
-        self.score_TS = np.zeros(len(self.X))
-
-        # for visualization
-        self.fig, self.ax = plt.subplots(2, 1, tight_layout=True)  # avoid overlap of labels
-
         # generate policy
-        if use_saved_policy:
+        if self.use_saved_policy:
             # start from existing policy(npz and dump)
             self.load_policy()
         else:
             # start experiment at first
             self.generate_policy()
+
+        # for visualization
+        self.fig, self.ax = plt.subplots(2, 1, tight_layout=True)  # avoid overlap of labels
 
         # visualize
         self.visualize()
@@ -68,6 +66,13 @@ class ComboInterface():
         self.actions = list(self.data[self.data["y"] < np.inf].index)
         self.values = self.data.iloc[self.actions,-1].to_numpy()
         self.param_num = len(self.X[0])
+
+        # calculation values
+        self.mean = np.zeros(len(self.X))
+        self.std = np.zeros(len(self.X))
+        self.score_PI = np.zeros(len(self.X))  # acquisition function
+        self.score_EI = np.zeros(len(self.X))
+        self.score_TS = np.zeros(len(self.X))
 
 
     # COMBO works as a MAXIMIZER in defalut
@@ -121,16 +126,16 @@ class ComboInterface():
         self.is_search_completed = True
 
 
-    def search_next_param_bayes(self):
+    def search_next_param_bayes(self, **kwargs):
         print('Search next param by BAYES_OPT (score:', self.search_score, ')')
-        self.next_action = self.policy.bayes_search(max_num_probes=1, score=self.search_score)
+        self.next_action = self.policy.bayes_search(score=self.search_score, **kwargs)
         print(' Next index: {}'.format(self.next_action))
         print(' Next param: {}'.format(self.X[self.next_action][0]))
 
 
-    def search_next_param_random(self):
+    def search_next_param_random(self, **kwargs):
         print('Search next param by RANDOM search')
-        self.next_action = self.policy.random_search(max_num_probes=1)
+        self.next_action = self.policy.random_search(max_num_probes=1, **kwargs)
         print(' Next index: {}'.format(self.next_action))
         print(' Next param: {}'.format(self.X[self.next_action][0]))
 
@@ -315,3 +320,50 @@ class ComboInterface():
             next_param = [0] * self.param_num
 
         return next_param
+
+
+    def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml', overwrite=False):
+        with open(candidates_config_path, 'r') as yml:
+            config = yaml.load(yml)
+            candidates_cfg = config['config']['candidates']
+
+        # set values
+        candidates_label = candidates_cfg['label']
+        candidates_label_str = ','.join(candidates_label)  # label needs to be string with NO SPACE between parameters.
+        param_dict = candidates_cfg['param'][0]
+        param_num = len(candidates_cfg['param'][0])
+
+        # param list
+        param_value_list = []
+        for v in param_dict.values():
+            param_value_list.append(v)
+
+        # index list for loop
+        # 'ex: i1, i2, i3'
+        i_list = []
+        for i in range(param_num):
+            i_list.append('i' + str(i))
+
+        # output csv format
+        # - NO SPACE between parameters
+        # - 'ex: %d,%d,%d,\n'
+        write_format = ''
+        for i in range(param_num):
+            write_format += '%d,'
+        write_format += '\n'
+
+        # generate candidates.csv
+        if overwrite: write_mode='w'
+        else: write_mode='x'
+
+        try:
+            print('Generating %s from %s' % (self.candidates_path, candidates_config_path))
+            with open(self.candidates_path, mode=write_mode) as f:
+                f.write(candidates_label_str)
+                f.write('\n')
+                for i_list in iter.product(*param_value_list):  # unpack
+                    f.write(write_format % i_list)
+                print('candidates is generated')
+        except FileExistsError:
+            print('candidates already exists')
+            pass

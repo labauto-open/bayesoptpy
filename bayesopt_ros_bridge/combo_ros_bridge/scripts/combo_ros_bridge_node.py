@@ -57,7 +57,8 @@ def main():
     ci = ComboInterface(combo, candidates_path, policy_load_dir, policy_save_dir, use_saved_policy, search_score)
     bridge = ComboROSBridge(ci, config, pub_rate, policy_save_dir)
 
-    # Run the bridge
+    # Start bayesopt and bridge
+    ci.start_bayesopt()
     bridge.run()
     rospy.spin()
 
