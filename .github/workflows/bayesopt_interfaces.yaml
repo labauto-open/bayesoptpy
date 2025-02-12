@@ -60,9 +60,9 @@ jobs:
           pip install ml_interfaces/bayesopt_interfaces
       - name: Run pytest
         run: |
-          disp=:99
-          screen=0
-          geom=640x480x24
-          exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
-          export DISPLAY=:99
+          #disp=:99
+          #screen=0
+          #geom=640x480x24
+          #exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
+          #export DISPLAY=:99
           pytest -v ml_interfaces/bayesopt_interfaces/tests/test_combo_interface.py

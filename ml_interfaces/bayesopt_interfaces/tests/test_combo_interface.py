@@ -31,7 +31,7 @@ def test_combo_interface():
     policy_save_dir = os.path.join(data_dir, 'result')
 
     # Generate combo
-    ci = ComboInterface(combo, candidates_path, policy_load_dir, policy_save_dir, use_saved_policy=False)
+    ci = ComboInterface(combo, candidates_path, policy_load_dir, policy_save_dir, use_saved_policy=False, visualize=False)
     ci.start_bayesopt()
 
     # Write combo operation below

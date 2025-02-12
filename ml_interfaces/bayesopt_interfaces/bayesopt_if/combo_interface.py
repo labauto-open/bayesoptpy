@@ -20,7 +20,7 @@ elif PYTHON_VERSION == 3:
 
 
 class ComboInterface():
-    def __init__(self, bayesopt, candidates_path='candidates.csv', policy_load_dir='.', policy_save_dir='.', use_saved_policy=False, search_score='PI'):
+    def __init__(self, bayesopt, candidates_path='candidates.csv', policy_load_dir='.', policy_save_dir='.', use_saved_policy=False, visualize=True, search_score='PI'):
         self.data = None
         self.X = None
         self.actions = None
@@ -32,6 +32,7 @@ class ComboInterface():
         self.policy_load_dir = policy_load_dir
         self.policy_save_dir = policy_save_dir
         self.use_saved_policy = use_saved_policy
+        self.visualize = visualize
         self.search_mode = 0  # 0: random search, 1: bayes
         self.search_score = search_score  # score: PI, EI, TS
         self.is_write_completed = False
@@ -54,10 +55,11 @@ class ComboInterface():
             self.generate_policy()
 
         # for visualization
-        self.fig, self.ax = plt.subplots(2, 1, tight_layout=True)  # avoid overlap of labels
+        if self.visualize:
+            self.fig, self.ax = plt.subplots(2, 1, tight_layout=True)  # avoid overlap of labels
 
-        # visualize
-        self.visualize()
+            # visualize
+            self.visualize()
 
 
     def load_dataset(self):
@@ -214,7 +216,8 @@ class ComboInterface():
 
     def save_plt(self, policy_save_dir='.'):
         # update before save
-        self.visualize()
+        if self.visualize:
+            self.visualize()
         # save plot
         plt_save_path_png = os.path.join(policy_save_dir, 'plt.png')
         plt_save_path_pdf = os.path.join(policy_save_dir, 'plt.pdf')
