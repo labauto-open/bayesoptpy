@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import csv
-import filecmp
 import os
 import sys
 
@@ -17,10 +16,9 @@ def get_data_from_result_list(index):
     return float(l[index+1][0])
 
 
-def test_physbo_interface():
+def main():
     # dir setting
     candidates_path  = './data/candidates.csv'
-    correct_candidates_path = './data/candidates-correct.csv'
     policy_load_dir = './data/load'
     policy_save_dir = './data/result'
 
@@ -38,12 +36,15 @@ def test_physbo_interface():
         result = get_data_from_result_list(pi.get_next_index())  # get result/evaluation data from experiment. (Result list is used for this test program).
         pi.write_result(result)  # write result to PHYSBO
     # Search with Bayesian optimization
-    for i in range(17):
+    for i in range(3):
         pi.search_next_param_bayes()
         result = get_data_from_result_list(pi.get_next_index())
         pi.write_result(result)
 
-    #input('Press enter to save and finish\n')
+    input('Press enter to save and finish\n')
+
     pi.save_data(policy_save_dir)
 
-    assert filecmp.cmp(candidates_path, correct_candidates_path)
+
+if __name__ == '__main__':
+    main()
