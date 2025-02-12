@@ -8,6 +8,9 @@ import sys
 
 from bayesopt_if.physbo_interface import PhysboInterface
 
+file_dir = os.path.dirname(__file__)
+data_dir = os.path.join(file_dir, 'data')
+
 
 def get_data_from_result_list(index):
     with open('./data/results.csv') as f:
@@ -19,10 +22,10 @@ def get_data_from_result_list(index):
 
 def test_physbo_interface():
     # dir setting
-    candidates_path  = './data/candidates.csv'
-    correct_candidates_path = './data/candidates-correct.csv'
-    policy_load_dir = './data/load'
-    policy_save_dir = './data/result'
+    candidates_path  = os.path.join(data_dir, 'candidates.csv')
+    correct_candidates_path = os.path.join(data_dir, 'candidates-correct.csv')
+    policy_load_dir = os.path.join(data_dir, 'load')
+    policy_save_dir = os.path.join(data_dir, 'result')
 
     # Generate physbo
     pi = PhysboInterface(candidates_path, policy_load_dir, policy_save_dir, use_saved_policy=False, search_score='EI')
