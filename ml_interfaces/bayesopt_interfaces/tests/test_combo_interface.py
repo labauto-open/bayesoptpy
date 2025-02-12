@@ -41,7 +41,7 @@ def test_combo_interface():
         ci.search_next_param_random()
         result = get_data_from_result_list(ci.get_next_index())  # get result/evaluation data from experiment. (Result list is used for this test program).
         ci.write_result(result)  # write result
-    for i in range(17):
+    for i in range(16):
         ci.search_next_param_bayes()
         result = get_data_from_result_list(ci.get_next_index())
         ci.write_result(result)  # write result
