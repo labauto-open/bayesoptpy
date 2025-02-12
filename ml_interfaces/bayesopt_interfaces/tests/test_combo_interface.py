@@ -4,6 +4,7 @@
 import csv
 import filecmp
 import os
+import pytest
 import random
 import sys
 
