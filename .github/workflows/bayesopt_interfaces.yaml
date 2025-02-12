@@ -47,7 +47,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          pip install pytest cython
+          pip install pytest cython numpy
       - name: Install combo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
