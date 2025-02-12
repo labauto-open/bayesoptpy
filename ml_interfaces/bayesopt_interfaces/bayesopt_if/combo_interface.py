@@ -171,7 +171,8 @@ class ComboInterface():
         self.save_policy(self.policy_save_dir)
         self.save_candidates_and_actions(self.policy_save_dir)  # csv
         self.save_candidates_with_scores(self.policy_save_dir)  # csv
-        self.save_plt(self.policy_save_dir)
+        if self.visualize:
+            self.save_plt(self.policy_save_dir)
 
 
     def save_policy(self, policy_save_dir='.'):
@@ -216,8 +217,7 @@ class ComboInterface():
 
     def save_plt(self, policy_save_dir='.'):
         # update before save
-        if self.visualize:
-            self.visualize()
+        self.visualize()
         # save plot
         plt_save_path_png = os.path.join(policy_save_dir, 'plt.png')
         plt_save_path_pdf = os.path.join(policy_save_dir, 'plt.pdf')
