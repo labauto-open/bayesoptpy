@@ -4,7 +4,6 @@
 import csv
 import filecmp
 import os
-import pytest
 import random
 import sys
 
@@ -24,7 +23,6 @@ def get_data_from_result_list(index):
     return float(l[index+1][0])
 
 
-@pytest.mark.filterwarnings("ignore:SettingWithCopyWarning")
 def test_combo_interface():
     # dir setting
     candidates_path  = os.path.join(data_dir, 'candidates.csv')
