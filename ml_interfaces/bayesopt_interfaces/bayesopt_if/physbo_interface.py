@@ -10,7 +10,7 @@ from .combo_interface import ComboInterface
 
 
 class PhysboInterface(ComboInterface):
-    def __init__(self, candidates_path='candidates.csv', policy_load_dir='.', policy_save_dir='.', use_saved_policy=False, search_score='PI'):
+    def __init__(self, candidates_path='candidates.csv', policy_load_dir='.', policy_save_dir='.', use_saved_policy=False, visualize=True, search_score='PI'):
         self.candidates_path = candidates_path
         self.policy_load_dir = policy_load_dir
         self.policy_save_dir = policy_save_dir
@@ -24,6 +24,7 @@ class PhysboInterface(ComboInterface):
                          self.policy_load_dir,
                          self.policy_save_dir,
                          self.use_saved_policy,
+                         self.visualize,
                          self.search_score)  # python3 description
 
 

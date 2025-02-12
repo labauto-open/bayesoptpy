@@ -9,7 +9,7 @@ setup(
     version='0.1.0',
     author='Yuki Asano',
     author_email='yasano@g.ecc.u-tokyo.ac.jp',
-    description='',
+    description='Interface for Bayesian Optimization',
     packages=find_packages(),
     install_requires = _requires_from_file('requirements.txt')
 )
