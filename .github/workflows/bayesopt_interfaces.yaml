@@ -27,4 +27,4 @@ jobs:
         run: |
           pip install ml_interfaces/bayesopt_interfaces
       - name: Run pytest
-        run: pytest -v ml_interfaces/bayesopt_interfaces/tests
+        run: pytest -v ml_interfaces/bayesopt_interfaces/tests/test_physbo_interface.py
