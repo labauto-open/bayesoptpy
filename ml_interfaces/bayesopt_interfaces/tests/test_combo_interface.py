@@ -23,6 +23,7 @@ def get_data_from_result_list(index):
     return float(l[index+1][0])
 
 
+@pytest.mark.filterwarnings("ignore:SettingWithCopyWarning")
 def test_combo_interface():
     # dir setting
     candidates_path  = os.path.join(data_dir, 'candidates.csv')
@@ -41,10 +42,10 @@ def test_combo_interface():
         ci.search_next_param_random()
         result = get_data_from_result_list(ci.get_next_index())  # get result/evaluation data from experiment. (Result list is used for this test program).
         ci.write_result(result)  # write result
-    for i in range(16):
+    for i in range(17):
         ci.search_next_param_bayes()
         result = get_data_from_result_list(ci.get_next_index())
-        ci.write_result(result)  # write result
+        ci.write_result(result)
 
     #raw_input('Press enter to save and finish\n')
     ci.save_data(policy_save_dir)
