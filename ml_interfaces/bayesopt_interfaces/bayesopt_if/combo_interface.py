@@ -327,7 +327,7 @@ class ComboInterface():
 
     def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml', overwrite=False):
         with open(candidates_config_path, 'r') as yml:
-            config = yaml.load(yml)
+            config = yaml.load(yml, Loader=yaml.Loader)
             candidates_cfg = config['config']['candidates']
 
         # set values
