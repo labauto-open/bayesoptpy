@@ -13,7 +13,8 @@ data_dir = os.path.join(file_dir, 'data')
 
 
 def get_data_from_result_list(index):
-    with open('./data/results.csv') as f:
+    results_path = os.path.join(data_dir, 'results.csv')
+    with open(results_path) as f:
         reader = csv.reader(f)
         l = [row for row in reader]
 
