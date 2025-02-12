@@ -50,7 +50,3 @@ def test_combo_interface():
     ci.save_data(policy_save_dir)
 
     assert filecmp.cmp(candidates_path, correct_candidates_path)
-
-
-if __name__ == '__main__':
-    test_combo_interface()
