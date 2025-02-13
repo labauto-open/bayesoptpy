@@ -1,4 +1,4 @@
 matplotlib
 pandas
 physbo
-pyyaml >= 6.0
+pyyaml == 5.4.1
