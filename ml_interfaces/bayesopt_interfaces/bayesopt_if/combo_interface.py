@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import itertools as iter
 import os
 import sys
 import numpy as np
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
-import yaml
+
 
 PYTHON_VERSION = sys.version_info.major
 if PYTHON_VERSION == 2:
@@ -323,50 +322,3 @@ class ComboInterface():
             next_param = [0] * self.param_num
 
         return next_param
-
-
-    def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml', overwrite=False):
-        with open(candidates_config_path, 'r') as yml:
-            config = yaml.load(yml, Loader=yaml.Loader)
-            candidates_cfg = config['config']['candidates']
-
-        # set values
-        candidates_label = candidates_cfg['label']
-        candidates_label_str = ','.join(candidates_label)  # label needs to be string with NO SPACE between parameters.
-        param_dict = candidates_cfg['param'][0]
-        param_num = len(candidates_cfg['param'][0])
-
-        # param list
-        param_value_list = []
-        for v in param_dict.values():
-            param_value_list.append(v)
-
-        # index list for loop
-        # 'ex: i1, i2, i3'
-        i_list = []
-        for i in range(param_num):
-            i_list.append('i' + str(i))
-
-        # output csv format
-        # - NO SPACE between parameters
-        # - 'ex: %d,%d,%d,\n'
-        write_format = ''
-        for i in range(param_num):
-            write_format += '%d,'
-        write_format += '\n'
-
-        # generate candidates.csv
-        if overwrite: write_mode='w'
-        else: write_mode='x'
-
-        try:
-            print('Generating %s from %s' % (self.candidates_path, candidates_config_path))
-            with open(self.candidates_path, mode=write_mode) as f:
-                f.write(candidates_label_str)
-                f.write('\n')
-                for i_list in iter.product(*param_value_list):  # unpack
-                    f.write(write_format % i_list)
-                print('candidates is generated')
-        except FileExistsError:
-            print('candidates already exists')
-            pass

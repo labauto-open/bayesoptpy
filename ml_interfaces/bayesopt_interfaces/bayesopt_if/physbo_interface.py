@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import itertools as iter
 import os
 import numpy as np
 import pandas as pd
 import physbo
 import matplotlib.pyplot as plt
+import yaml
 from .combo_interface import ComboInterface
 
 
@@ -97,3 +99,69 @@ class PhysboInterface(ComboInterface):
     def update_chosed_actions(self):
         self.chosen_actions = self.policy.history.chosen_actions[:self.policy.history.total_num_search]
         print('chosen_actions:\n', self.chosen_actions)
+
+
+    def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml'):
+        with open(candidates_config_path, 'r') as yml:
+            config = yaml.load(yml, Loader=yaml.Loader)
+            candidates_cfg = config['config']['candidates']
+
+        # set values
+        candidates_label = candidates_cfg['label']
+        candidates_label_str = ','.join(candidates_label)  # label needs to be string with NO SPACE between parameters.
+        param_dict = candidates_cfg['param'][0]
+        param_num = len(candidates_cfg['param'][0])
+
+        # param list
+        param_value_list = []
+        for v in param_dict.values():
+            param_value_list.append(v)
+
+        # index list for loop
+        # 'ex: i1, i2, i3'
+        i_list = []
+        for i in range(param_num):
+            i_list.append('i' + str(i))
+
+        # output csv format
+        # - NO SPACE between parameters
+        # - 'ex: %d,%d,%d,\n'
+        write_format = ''
+        for i in range(param_num):
+            write_format += '%d,'
+        write_format += '\n'
+
+        try:
+            print('Generating %s from %s' % (self.candidates_path, candidates_config_path))
+            write_mode='x'
+
+            # check dir
+            candidates_dir = os.path.dirname(self.candidates_path)
+            if not os.path.exists(candidates_dir):
+                print('candidates_dir is not exists. Do you make it [y/N]?')
+                val = input()
+                if val == 'y' or val == 'Y':
+                    os.makedirs(candidates_dir)
+                    print('%s is generated' % (candidates_dir))
+                else:
+                    exit()
+
+            # check candidates
+            if os.path.exists(self.candidates_path):
+                print('%s already exists. Do you overwrite [y/N]?' % (self.candidates_path))
+                val = input()
+                if val == 'y' or val == 'Y':
+                    write_mode='w'
+                else:
+                    exit()
+
+            # generate candidates
+            with open(self.candidates_path, mode=write_mode) as f:
+                f.write(candidates_label_str)
+                f.write('\n')
+                for i_list in iter.product(*param_value_list):  # unpack
+                    f.write(write_format % i_list)
+                print('%s is generated' % (self.candidates_path))
+
+        except Exception as e:
+            print('Error', e)
