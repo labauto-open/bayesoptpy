@@ -144,6 +144,7 @@ class PhysboInterface(ComboInterface):
                     os.makedirs(candidates_dir)
                     print('%s is generated' % (candidates_dir))
                 else:
+                    print('exit')
                     exit()
 
             # check candidates
@@ -153,6 +154,7 @@ class PhysboInterface(ComboInterface):
                 if val == 'y' or val == 'Y':
                     write_mode='w'
                 else:
+                    print('exit')
                     exit()
 
             # generate candidates
