@@ -318,16 +318,6 @@ class ComboInterface():
         print('std:\n', self.std)
 
 
-    # def update_std(self):
-    #     #print('Updating std')
-    #     #self.policy.predictor.prepare(self.policy.training)  # prepare() is needed before get_post_fcov
-    #     var = self.policy.predictor.model.get_post_fcov(self.policy.training.X, self.X)
-    #     self.std = np.sqrt(var)
-    #     self.mean_minus_std = self.mean - self.std
-    #     self.mean_plus_std = self.mean - self.std
-    #     print('std:\n', self.std)
-
-
     def update_chosed_actions(self):
         self.chosed_actions = self.policy.history.chosed_actions[:self.policy.history.total_num_search]
         print('chosed_actions:\n', self.chosed_actions)
