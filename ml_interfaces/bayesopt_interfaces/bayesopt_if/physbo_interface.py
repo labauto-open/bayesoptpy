@@ -69,6 +69,28 @@ class PhysboInterface(ComboInterface):
 
 
     # override
+    def save_candidates_with_scores(self, policy_save_dir='.'):
+        selected_order = np.full(len(self.X), np.nan)
+        for i,a in enumerate(self.chosen_actions):
+            selected_order[a] = i
+        print('selected_order:', selected_order)
+
+        # append scores to candidate data and save
+        data_with_scores = self.data.copy()
+        data_with_scores['selected_order'] = selected_order
+        data_with_scores['mean'] = self.mean
+        data_with_scores['std'] = self.std
+        data_with_scores['mean-std'] = self.mean_minus_std
+        data_with_scores['mean+std'] = self.mean_plus_std
+        data_with_scores['score_EI'] = self.score_EI
+        data_with_scores['score_PI'] = self.score_PI
+        data_with_scores['score_TS'] = self.score_TS
+
+        candidates_with_scores_path = os.path.join(policy_save_dir, 'candidates_with_scores.csv')
+        data_with_scores.to_csv(candidates_with_scores_path, index=False)
+
+
+    # override
     def update_score(self):
         print('Updating score')
         self.score_EI = self.policy.get_score(mode="EI", xs=self.X)
