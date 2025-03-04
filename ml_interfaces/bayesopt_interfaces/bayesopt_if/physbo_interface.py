@@ -93,12 +93,17 @@ class PhysboInterface(ComboInterface):
     # override
     def update_score(self):
         print('Updating score')
-        self.score_EI = self.policy.get_score(mode="EI", xs=self.X)
-        self.score_PI = self.policy.get_score(mode="PI", xs=self.X)
-        self.score_TS = self.policy.get_score(mode="TS", xs=self.X)
-        print('EI:\n', self.score_EI)
-        print('PI:\n', self.score_PI)
-        print('TS:\n', self.score_TS)
+        if self.search_score=='EI':
+            self.score_EI = self.policy.get_score(mode="EI", xs=self.X)
+            print('EI:\n', self.score_EI)
+        elif self.search_score=='PI':
+            self.score_PI = self.policy.get_score(mode="PI", xs=self.X)
+            print('PI:\n', self.score_PI)
+        elif self.search_score=='TS':
+            self.score_TS = self.policy.get_score(mode="TS", xs=self.X)
+            print('TS:\n', self.score_TS)
+        else:
+            print('unknown function')
 
 
     # override
