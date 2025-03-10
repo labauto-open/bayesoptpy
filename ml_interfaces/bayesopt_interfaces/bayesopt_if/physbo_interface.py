@@ -131,7 +131,7 @@ class PhysboInterface(ComboInterface):
     def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml'):
         with open(candidates_config_path, 'r') as yml:
             config = yaml.load(yml, Loader=yaml.Loader)
-            candidates_cfg = config['config']['candidates']
+            candidates_cfg = config['config']['param_candidates']
 
         # set values
         candidates_label = candidates_cfg['label']
