@@ -136,8 +136,8 @@ class PhysboInterface(ComboInterface):
         # set values
         candidates_label = candidates_cfg['label']
         candidates_label_str = ','.join(candidates_label)  # label needs to be string with NO SPACE between parameters.
-        param_dict = candidates_cfg['param'][0]
-        param_num = len(candidates_cfg['param'][0])
+        param_dict = candidates_cfg['param']
+        param_num = len(candidates_cfg['param'])
 
         # param list
         param_value_list = []
