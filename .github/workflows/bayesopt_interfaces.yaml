@@ -1,0 +1,57 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests_physbo_interface:
+    name: Run tests for physbo_interface
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8]
+        os: [ubuntu-20.04]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install pytest
+      - name: Install bayesopt_interfaces
+        run: |
+          pip install ml_interfaces/bayesopt_interfaces
+      - name: Run pytest
+        run: pytest -v ml_interfaces/bayesopt_interfaces/tests/test_physbo_interface.py
+
+  tests_combo_interface:
+    name: Run tests for combo_interface
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+    container:
+        image: python:2.7.18-buster
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install pytest cython numpy
+      - name: Install combo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/tsudalab/combo.git
+          cd combo
+          python setup.py install
+      - name: Install bayesopt_interfaces
+        run: |
+          pip install ml_interfaces/bayesopt_interfaces
+      - name: Run pytest
+        run: |
+          pytest -v ml_interfaces/bayesopt_interfaces/tests/test_combo_interface.py
