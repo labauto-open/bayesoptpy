@@ -1,0 +1,8 @@
+# for equipment_interface
+pyserial
+
+# for bayesopt_interface
+matplotlib
+pandas
+physbo
+pyyaml == 5.4.1

@@ -1,0 +1,8 @@
+*.~
+*.pyc
+
+# for bayesopt_interface
+examples/data/chosen_actions.csv
+examples/data/result
+tests/data/chosed_actions.csv
+tests/data/result
