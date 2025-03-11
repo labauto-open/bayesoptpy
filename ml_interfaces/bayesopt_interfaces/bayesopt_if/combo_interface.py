@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import itertools as iter
 import os
 import sys
 import numpy as np
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
-import yaml
+
 
 PYTHON_VERSION = sys.version_info.major
 if PYTHON_VERSION == 2:
@@ -56,7 +55,7 @@ class ComboInterface():
 
         # for visualization
         if self.visualize:
-            self.fig, self.ax = plt.subplots(2, 1, tight_layout=True)  # avoid overlap of labels
+            self.fig, self.ax = plt.subplots(3, 1, tight_layout=True)  # avoid overlap of labels
 
             # visualize
             self.visualize()
@@ -72,6 +71,8 @@ class ComboInterface():
         # calculation values
         self.mean = np.zeros(len(self.X))
         self.std = np.zeros(len(self.X))
+        self.mean_minus_std = np.zeros(len(self.X))
+        self.mean_plus_std = np.zeros(len(self.X))
         self.score_PI = np.zeros(len(self.X))  # acquisition function
         self.score_EI = np.zeros(len(self.X))
         self.score_TS = np.zeros(len(self.X))
@@ -142,11 +143,15 @@ class ComboInterface():
         print(' Next param: {}'.format(self.X[self.next_action][0]))
 
 
-    def write_result(self, value):
+    def write_result(self, result_values):
+        '''
+        arg:
+        - result_values: numpy.ndarray
+        '''
+
         self.is_search_completed = False  # search flag off before write
         self.is_write_completed = False
-
-        self.policy.write(self.next_action, value)
+        self.policy.write(self.next_action, result_values)
         print('\nShow history:')
         self.bayesopt.search.utility.show_search_results(self.policy.history, 10)
 
@@ -206,8 +211,8 @@ class ComboInterface():
         data_with_scores = self.data.copy()
         data_with_scores['mean'] = self.mean
         data_with_scores['std'] = self.std
-        data_with_scores['mean-std'] = self.mean - self.std
-        data_with_scores['mean+std'] = self.mean + self.std
+        data_with_scores['mean-std'] = self.mean_minus_std
+        data_with_scores['mean+std'] = self.mean_plus_std
         data_with_scores['score_EI'] = self.score_EI
         data_with_scores['score_PI'] = self.score_PI
         data_with_scores['score_TS'] = self.score_TS
@@ -234,27 +239,46 @@ class ComboInterface():
         if self.policy.training.t is None:
             self.policy.training.t = np.array([])
 
-        # visualize evaluation value
+        # visualize cumulative max
         self.ax[0].cla()  # reset plotted graph
-        self.ax[0].plot(self.policy.training.t, ".", label="sample")
-        self.ax[0].plot(pd.DataFrame(self.policy.training.t).cummax(), label="cummax")
-        self.ax[0].set_title('Cummax')
-        self.ax[0].set_xlabel("Experiment id")
+        self.ax[0].plot(self.policy.training.t, ".", label="Observed value")
+        self.ax[0].plot(pd.DataFrame(self.policy.training.t).cummax(), label="Cummax")
+        self.ax[0].set_title('Cumulative max')
+        self.ax[0].set_xlabel("Experiment order")
         self.ax[0].set_ylabel("Evaluation value")
         self.ax[0].set_xlim(0,)
-        self.ax[0].set_xticks(np.arange(0, len(self.policy.training.t), 1))
+        self.ax[0].set_xticks(np.arange(0, len(self.policy.training.t), 5))
         self.ax[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
 
-        # visualize score
+        # visualize observed value and prediction (posterior mean and std)
         self.ax[1].cla()
-        self.ax[1].plot(self.score_EI, label='EI')  # score is ordered same as candidates?
-        self.ax[1].plot(self.score_PI, label='PI')
-        self.ax[1].plot(self.score_TS, label='TS')
-        self.ax[1].set_title("Acquisition function")
+        x = range(len(self.X))
+        y_below = self.mean_minus_std
+        y_above = self.mean_plus_std
+        self.ax[1].plot(self.data["y"], ".", label="Observed value") # measure value
+        self.ax[1].plot(self.mean, label='Posterior mean')
+        self.ax[1].fill_between(x, y_below, y_above, color='b', alpha=.1)
+        self.ax[1].set_title("Observation and prediction")
         self.ax[1].set_xlabel("Candidate (action) id")
-        self.ax[1].set_ylabel("Function value")
+        self.ax[1].set_ylabel("Evaluation value")
         self.ax[1].set_xlim(0,)
         self.ax[1].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
+
+        # visualize score
+        self.ax[2].cla()
+        if self.search_score=='EI':
+            self.ax[2].plot(self.score_EI, label='EI')  # score is ordered same as candidates?
+        elif self.search_score=='PI':
+            self.ax[2].plot(self.score_PI, label='PI')
+        elif self.search_score=='TS':
+            self.ax[2].plot(self.score_TS, label='TS')
+        else:
+            print('unknown score')
+        self.ax[2].set_title("Acquisition function")
+        self.ax[2].set_xlabel("Candidate (action) id")
+        self.ax[2].set_ylabel("Function value")
+        self.ax[2].set_xlim(0,)
+        self.ax[2].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
 
         plt.pause(0.1)  # use pause() for continuous plot
 
@@ -263,8 +287,7 @@ class ComboInterface():
     def update_bayesopt(self):
         print('Updating bayesopt:')
         self.policy.bayes_search(max_num_probes=0, num_rand_basis=0)  # need to avoid warning
-        self.update_mean()
-        self.update_std()
+        self.update_mean_std()
         self.update_score()
         self.update_chosed_actions()
         self.update_remaining_actions()
@@ -282,18 +305,16 @@ class ComboInterface():
         print('TS:\n', self.score_TS)
 
 
-    def update_mean(self):
-        print('Updating mean')
+    def update_mean_std(self):
+        print('Updating mean and std')
         self.policy.predictor.prepare(self.policy.training)  # prepare() is needed before get_post_fmean
         self.mean = self.policy.predictor.model.get_post_fmean(self.policy.training.X, self.X)
-        print('mean:\n', self.mean)
-
-
-    def update_std(self):
-        print('Updating std')
-        self.policy.predictor.prepare(self.policy.training)  # prepare() is needed before get_post_fcov
         var = self.policy.predictor.model.get_post_fcov(self.policy.training.X, self.X)
         self.std = np.sqrt(var)
+        self.mean_minus_std = self.mean - self.std
+        self.mean_plus_std = self.mean + self.std
+
+        print('mean:\n', self.mean)
         print('std:\n', self.std)
 
 
@@ -323,50 +344,3 @@ class ComboInterface():
             next_param = [0] * self.param_num
 
         return next_param
-
-
-    def generate_candidates(self, candidates_config_path='../../config/candidates_config.yaml', overwrite=False):
-        with open(candidates_config_path, 'r') as yml:
-            config = yaml.load(yml, Loader=yaml.Loader)
-            candidates_cfg = config['config']['candidates']
-
-        # set values
-        candidates_label = candidates_cfg['label']
-        candidates_label_str = ','.join(candidates_label)  # label needs to be string with NO SPACE between parameters.
-        param_dict = candidates_cfg['param'][0]
-        param_num = len(candidates_cfg['param'][0])
-
-        # param list
-        param_value_list = []
-        for v in param_dict.values():
-            param_value_list.append(v)
-
-        # index list for loop
-        # 'ex: i1, i2, i3'
-        i_list = []
-        for i in range(param_num):
-            i_list.append('i' + str(i))
-
-        # output csv format
-        # - NO SPACE between parameters
-        # - 'ex: %d,%d,%d,\n'
-        write_format = ''
-        for i in range(param_num):
-            write_format += '%d,'
-        write_format += '\n'
-
-        # generate candidates.csv
-        if overwrite: write_mode='w'
-        else: write_mode='x'
-
-        try:
-            print('Generating %s from %s' % (self.candidates_path, candidates_config_path))
-            with open(self.candidates_path, mode=write_mode) as f:
-                f.write(candidates_label_str)
-                f.write('\n')
-                for i_list in iter.product(*param_value_list):  # unpack
-                    f.write(write_format % i_list)
-                print('candidates is generated')
-        except FileExistsError:
-            print('candidates already exists')
-            pass
