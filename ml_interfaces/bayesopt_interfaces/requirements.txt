@@ -1,4 +1,0 @@
-matplotlib
-pandas
-physbo
-pyyaml == 5.4.1
