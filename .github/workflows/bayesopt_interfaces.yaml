@@ -23,9 +23,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools
           pip install pytest
-      - name: Install labauto
+      - name: Install labauto  # './' is necessary to install local pkg
         run: |
-          pip install labauto
+          pip install ./labauto
       - name: Run pytest
         run: pytest -v tests/test_physbo_interface.py
 
