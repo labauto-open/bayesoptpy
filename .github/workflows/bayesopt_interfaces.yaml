@@ -51,9 +51,9 @@ jobs:
           git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/tsudalab/combo.git
           cd combo
           python setup.py install
-      - name: Install labauto dependencies
+      - name: Install labauto  # install local pkg
         run: |
-          pip install -r requirements.txt
+          pip install .
       - name: Run pytest
         run: |
           pytest -v tests/test_combo_interface.py
