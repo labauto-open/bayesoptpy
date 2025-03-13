@@ -23,7 +23,7 @@ jobs:
           pip install pytest
       - name: Install labauto dependencies
         run: |
-          pip install -r labauto/requirements.txt
+          pip install -r requirements.txt
       - name: Run pytest
         run: pytest -v tests/test_physbo_interface.py
 
@@ -51,7 +51,7 @@ jobs:
           python setup.py install
       - name: Install labauto dependencies
         run: |
-          pip install -r labauto/requirements.txt
+          pip install -r requirements.txt
       - name: Run pytest
         run: |
           pytest -v tests/test_combo_interface.py
