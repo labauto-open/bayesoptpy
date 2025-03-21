@@ -1,5 +1,7 @@
-*.~
+*~
 *.pyc
+build
+labauto.egg-info
 
 # for bayesopt_interface
 examples/data/chosen_actions.csv

@@ -1,4 +1,4 @@
-# for equipment_interface
+# for equipment_interfaces
 pyserial
 
 # for bayesopt_interface
@@ -6,3 +6,6 @@ matplotlib
 pandas
 physbo
 pyyaml
+
+# for gui_interfaces
+pyautogui
