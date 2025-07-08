@@ -8,7 +8,7 @@ import random
 import sys
 
 import combo
-from labauto.ml_interfaces.bayesopt_interfaces.combo_interface import ComboInterface
+from labauto.interfaces.bayesopt.combo_interface import ComboInterface
 
 file_dir = os.path.dirname(__file__)
 data_dir = os.path.join(file_dir, 'data')
