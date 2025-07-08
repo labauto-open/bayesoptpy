@@ -2,7 +2,9 @@
 *.pyc
 
 # for bayesopt_interface
-examples/data/chosen_actions.csv
-examples/data/result
+examples/bayesopt/data/candidates.csv
+examples/bayesopt/data/result.csv
+examples/bayesopt/data/chosen_actions.csv
+examples/bayesopt/data/result
 tests/data/chosed_actions.csv
 tests/data/result
