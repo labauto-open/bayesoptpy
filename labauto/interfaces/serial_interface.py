@@ -28,9 +28,11 @@ class SerialInterface():
                 self.client = serial.Serial(self.port, self.baudrate, self.bytesize, self.parity, self.stopbits, self.timeout)
                 self.is_open = True
                 time.sleep(0.5)
-                print('Connection is established\n')
+                print('Serial connection is established\n')
             except Exception as e:
-                print('Connection error\n')
+                print('Serial connection error')
+                print(e)
+                print('\n')
 
 
     def is_connected(self):
