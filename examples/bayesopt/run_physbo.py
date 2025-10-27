@@ -5,7 +5,7 @@ import csv
 import os
 import sys
 
-from bayesopt_if.physbo_interface import PhysboInterface
+from labauto.interfaces.bayesopt.physbo_interface import PhysboInterface
 
 
 def get_data_from_result_list(index):
