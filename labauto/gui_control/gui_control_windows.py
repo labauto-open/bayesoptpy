@@ -14,7 +14,7 @@ import win32gui
 import win32con
 
 
-class GuiInterfaceWindows():
+class GUIControlWindows():
     def __init__(self, window_name, exe_dir, exe_cmd, exe_sleep):
         # variables
         self.active_window_x1 = 0
@@ -86,6 +86,17 @@ class GuiInterfaceWindows():
         pag.click(x, y, clicks)
         
         time.sleep(sleep_time)
+
+
+    def click_by_pos_on_window(self, window_name, offset_x, offset_y, clicks):
+        # arg
+        # - window_name: the window to be active
+        # - offset_x, y : clickする座標. windowの左端からのpos
+        # - clicks: number of click
+        self.make_window_active(window_name)
+        print('%s window is activated' % window_name)
+        self.click_by_pos(offset_x, offset_y, clicks)
+        print('click position: (%s, %s). %s times' % (offset_x, offset_y, clicks))
 
 
     def click_by_img(self, img_path, clicks=1, conf=0.9, sleep_time=1):

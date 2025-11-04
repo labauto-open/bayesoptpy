@@ -1,4 +1,4 @@
-# for equipment_interfaces
+# for interfaces
 pyserial
 
 # for bayesopt_interface
@@ -7,5 +7,5 @@ pandas
 physbo
 pyyaml
 
-# for gui_interfaces
+# for gui_control
 pyautogui
