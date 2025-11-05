@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import serial
+import sys
 import time
 
 
@@ -32,7 +33,7 @@ class SerialInterface():
             except Exception as e:
                 print('Serial connection error')
                 print(e)
-                print('\n')
+                sys.exit(1)
 
 
     def is_connected(self):
