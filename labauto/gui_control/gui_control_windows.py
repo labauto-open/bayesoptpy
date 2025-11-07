@@ -6,6 +6,7 @@
 
 import os
 import pyautogui as pag
+import pygetwindow as gw
 import subprocess
 import sys
 import time
@@ -129,3 +130,15 @@ class GUIControlWindows():
 
     def get_active_window_name(self):
         return self.active_window_name
+
+
+    def resize_window(self, window_name, width=800, height=600, x=100, y=100):
+        windows = gw.getWindowsWithTitle(window_name)
+        if windows:
+            win = windows[0]
+            win.moveTo(x, y)
+            win.resizeTo(width, height)
+            print(f"{window_name} size is changed to {width}x{height}")
+        else:
+            print(f"no window named: {window_name}")
+
