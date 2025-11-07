@@ -85,7 +85,7 @@ class GUIControlWindows():
         x, y = pag.position()
         print('click position:', x, y)
         pag.click(x, y, clicks)
-        
+
         time.sleep(sleep_time)
 
 
@@ -115,7 +115,7 @@ class GUIControlWindows():
     def search_window_by_img(self, img_path, duration=1):
         x,y = pag.locateOnScreen(img_path)
         pag.moveTo(x, y, duration)
-        
+
 
     def get_window_name(self):
         '''
