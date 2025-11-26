@@ -71,6 +71,16 @@ class GUIControlWindows():
             print('something wrong')
 
 
+    def close_active_window(self):
+        window = gw.getWindowsWithTitle(self.active_window_name)[0]
+
+        # relartive position for close button (top right)
+        x = window.width - 1
+        y = 1
+
+        pag.click(window.left+x, window.top+y)
+
+
     def click_by_pos(self, offset_x, offset_y, clicks=1, sleep_time=0.5, duration=1, relative=None):
         '''
         - default (relative None): click offset_x,y position of the active window
