@@ -157,3 +157,23 @@ class GUIControlWindows():
         else:
             print(f"no window named: {window_name}")
 
+
+    def screenshot_window(self, window_name, img_path):
+        '''
+        take screenshot of specified window
+
+        arg:
+        - window_name: window name for screenshot
+        - img_path: save path of taken image (.png)
+        '''
+        if window_name is not self.active_window_name:
+            self.make_window_active(window_name)
+
+        x = self.active_window_x1
+        y = self.active_window_y1
+        w = self.active_window_width
+        h = self.active_window_length
+        region = (x, y, w, h)
+
+        screenshot = pag.screenshot(region=region)
+        screenshot.save(img_path)
