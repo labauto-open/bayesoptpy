@@ -5,14 +5,19 @@
 # - Windows PowerShell is supposed to be used
 
 import os
+import platform
 import pyautogui as pag
-import pygetwindow as gw
 import subprocess
 import sys
 import time
-import win32api
-import win32gui
-import win32con
+
+if platform.system() == 'Windows':
+    import win32api
+    import win32gui
+    import win32con
+    import pygetwindow as gw
+else:
+    print('skip importing Windows dependent modules due to OS compatibility')
 
 
 class GUIControlWindows():
