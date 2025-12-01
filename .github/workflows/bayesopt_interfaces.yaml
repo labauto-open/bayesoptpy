@@ -95,14 +95,14 @@ jobs:
 
           python --version
           python -m pip --version
-      - name: Install dependencies
+      - name: Install dependencies (for combo)
         run: |
+          apt-get install -y python2-tk
           python -m pip install pytest cython numpy
       - name: Install combo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          apt-get install -y python2-tk
           git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/tsudalab/combo.git
           cd combo
           python setup.py install
