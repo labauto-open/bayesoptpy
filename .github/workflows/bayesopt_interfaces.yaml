@@ -90,8 +90,7 @@ jobs:
           ln -sf /usr/bin/python2 /usr/local/bin/python
           curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 
-          python -m ensurepip --upgrade
-          python -m pip install --upgrade pip setuptools
+          python -m pip install --upgrade pip setuptools wheel
 
           python --version
           python -m pip --version
