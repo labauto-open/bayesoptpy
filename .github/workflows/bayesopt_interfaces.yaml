@@ -97,7 +97,9 @@ jobs:
           python -m pip --version
       - name: Install dependencies (for combo)
         run: |
-          apt-get install -y python2-tk
+          # for Tkinter
+          apt-get install -y tk-dev libtcl-dev libffi-dev
+
           python -m pip install pytest cython numpy
       - name: Install combo
         env:
