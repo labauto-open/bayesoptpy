@@ -5,6 +5,7 @@ on:
   pull_request:
 
 jobs:
+  # physbo
   tests_physbo_interface:
     name: Run tests for physbo_interface
     runs-on: ${{ matrix.os }}
@@ -29,7 +30,7 @@ jobs:
       - name: Run pytest
         run: pytest -v tests/test_physbo_interface.py
 
-  # for old ubuntu (20.04)
+  # physbo with old ubuntu (20.04)
   tests_physbo_interface_ubuntu_old:
     name: Run tests for physbo_interface_ubuntu_old
     runs-on: ubuntu-latest
@@ -84,17 +85,18 @@ jobs:
       - name: Install system deps (for Python builds)
         run: |
           apt-get update
-          apt-get install -y build-essential
+          apt-get install -y build-essential git
           apt-get install -y --no-install-recommends python2 python2-dev
-          # Use the selected python
           ln -sf /usr/bin/python2 /usr/local/bin/python
-          ln -sf /usr/bin/pip /usr/local/bin/pip
+
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade pip setuptools
+
           python --version
-          pip --version
+          python -m pip --version
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip setuptools
-          pip install pytest cython numpy
+          python -m pip install pytest cython numpy
       - name: Install combo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -104,7 +106,7 @@ jobs:
           python setup.py install
       - name: Install bayesoptpy  # install local pkg
         run: |
-          pip install .
+          python -m pip install .
       - name: Run pytest
         run: |
           pytest -v tests/test_combo_interface.py
