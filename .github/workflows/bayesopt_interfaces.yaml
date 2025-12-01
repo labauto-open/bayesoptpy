@@ -104,6 +104,8 @@ jobs:
       - name: Install bayesoptpy  # install local pkg
         run: |
           python -m pip install .
-      - name: Run pytest
+      - name: Run pytest (matplotlib GUI disabled)
         run: |
           pytest -v tests/test_combo_interface.py
+        env:
+          MPLBACKEND: Agg  # desable dependency on Tkinter (desable matplotlib GUI)
