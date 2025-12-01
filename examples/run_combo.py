@@ -6,7 +6,7 @@ import random
 import sys
 
 import combo
-from labauto.interfaces.bayesopt.combo_interface import ComboInterface
+from bayesoptpy.combo_interface import ComboInterface
 
 
 def main():

@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools
           pip install pytest
-      - name: Install labauto  # install local pkg
+      - name: Install bayesoptpy  # install local pkg
         run: |
           pip install .
       - name: Run pytest
@@ -51,7 +51,7 @@ jobs:
           git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/tsudalab/combo.git
           cd combo
           python setup.py install
-      - name: Install labauto  # install local pkg
+      - name: Install bayesoptpy  # install local pkg
         run: |
           pip install .
       - name: Run pytest
