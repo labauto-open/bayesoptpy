@@ -47,7 +47,7 @@ jobs:
           #apt-get install -y software-properties-common build-essential curl git
           #add-apt-repository ppa:deadsnakes/ppa -y
           apt-get update
-          apt-get install -y -no-install-recommends python${{ matrix.python-version }} python${{ matrix.python-version }}-distutils python3-pip
+          apt-get install -y --no-install-recommends python${{ matrix.python-version }} python${{ matrix.python-version }}-distutils python3-pip
 
           # Use the selected python
           ln -sf /usr/bin/python${{ matrix.python-version }} /usr/local/bin/python
