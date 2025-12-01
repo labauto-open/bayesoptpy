@@ -1,5 +1,5 @@
-# LabAuto
-Software package for laboratory automation
+# bayesoptpy
+Python interface for Baysian Optimization
 
 ## Install
 ```
