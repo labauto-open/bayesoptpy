@@ -42,6 +42,7 @@ jobs:
     steps:
       - name: Install system deps (for Python builds)
         run: |
+          export DEBIAN_FRONTEND=noninteractive
           apt-get update
           apt-get install -y software-properties-common build-essential curl git
           add-apt-repository ppa:deadsnakes/ppa -y
