@@ -40,12 +40,24 @@ jobs:
         python-version: ['3.8', '3.9', '3.10']
         os: [ubuntu:20.04]
     steps:
+      - name: Install system deps (for Python builds)
+        run: |
+          apt-get update
+          apt-get install -y software-properties-common build-essential curl git
+          add-apt-repository ppa:deadsnakes/ppa -y
+          apt-get update
+          apt-get install -y python${{ matrix.python-version }} python${{ matrix.python-version }}-distutils python3-pip
+
+          # Use the selected python
+          ln -sf /usr/bin/python${{ matrix.python-version }} /usr/local/bin/python
+          ln -sf /usr/bin/pip3 /usr/local/bin/pip
+
+          python --version
+          pip --version
+
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools
