@@ -9,3 +9,4 @@ pyyaml
 
 # for gui_control
 pyautogui
+pygetwindow

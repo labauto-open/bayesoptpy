@@ -5,13 +5,19 @@
 # - Windows PowerShell is supposed to be used
 
 import os
+import platform
 import pyautogui as pag
 import subprocess
 import sys
 import time
-import win32api
-import win32gui
-import win32con
+
+if platform.system() == 'Windows':
+    import win32api
+    import win32gui
+    import win32con
+    import pygetwindow as gw
+else:
+    print('skip importing Windows dependent modules due to OS compatibility')
 
 
 class GUIControlWindows():
@@ -70,6 +76,16 @@ class GUIControlWindows():
             print('something wrong')
 
 
+    def close_active_window(self):
+        window = gw.getWindowsWithTitle(self.active_window_name)[0]
+
+        # relartive position for close button (top right)
+        x = window.width - 1
+        y = 1
+
+        pag.click(window.left+x, window.top+y)
+
+
     def click_by_pos(self, offset_x, offset_y, clicks=1, sleep_time=0.5, duration=1, relative=None):
         '''
         - default (relative None): click offset_x,y position of the active window
@@ -84,7 +100,7 @@ class GUIControlWindows():
         x, y = pag.position()
         print('click position:', x, y)
         pag.click(x, y, clicks)
-        
+
         time.sleep(sleep_time)
 
 
@@ -114,7 +130,7 @@ class GUIControlWindows():
     def search_window_by_img(self, img_path, duration=1):
         x,y = pag.locateOnScreen(img_path)
         pag.moveTo(x, y, duration)
-        
+
 
     def get_window_name(self):
         '''
@@ -129,3 +145,35 @@ class GUIControlWindows():
 
     def get_active_window_name(self):
         return self.active_window_name
+
+
+    def resize_window(self, window_name, width=800, height=600, x=100, y=100):
+        windows = gw.getWindowsWithTitle(window_name)
+        if windows:
+            win = windows[0]
+            win.moveTo(x, y)
+            win.resizeTo(width, height)
+            print(f"{window_name} size is changed to {width}x{height}")
+        else:
+            print(f"no window named: {window_name}")
+
+
+    def screenshot_window(self, window_name, img_path):
+        '''
+        take screenshot of specified window
+
+        arg:
+        - window_name: window name for screenshot
+        - img_path: save path of taken image (.png)
+        '''
+        if window_name is not self.active_window_name:
+            self.make_window_active(window_name)
+
+        x = self.active_window_x1
+        y = self.active_window_y1
+        w = self.active_window_width
+        h = self.active_window_length
+        region = (x, y, w, h)
+
+        screenshot = pag.screenshot(region=region)
+        screenshot.save(img_path)
