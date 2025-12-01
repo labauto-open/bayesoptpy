@@ -6,7 +6,7 @@ import filecmp
 import os
 import sys
 
-from labauto.interfaces.bayesopt.physbo_interface import PhysboInterface
+from bayesoptpy.physbo_interface import PhysboInterface
 
 file_dir = os.path.dirname(__file__)
 data_dir = os.path.join(file_dir, 'data')

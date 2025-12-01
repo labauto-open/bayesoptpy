@@ -1,12 +1,5 @@
-# for interfaces
-pyserial
-
 # for bayesopt_interface
 matplotlib
 pandas
 physbo
 pyyaml
-
-# for gui_control
-pyautogui
-pygetwindow

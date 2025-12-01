@@ -6,7 +6,7 @@ def _requires_from_file(filename):
 
 
 setup(
-    name='labauto',
+    name='bayesoptpy',
     version='0.1.0',
     description='',
     author='Yuki Asano',

@@ -1,7 +1,7 @@
 *~
 *.pyc
 build
-labauto.egg-info
+bayesoptpy.egg-info
 
 # for bayesopt_interface
 examples/bayesopt/data/candidates.csv
