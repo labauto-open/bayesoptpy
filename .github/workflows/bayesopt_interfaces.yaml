@@ -37,7 +37,7 @@ jobs:
       image: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9']
         os: [ubuntu:20.04]
     steps:
       - name: Install system deps (for Python builds)
@@ -47,7 +47,7 @@ jobs:
           #apt-get install -y software-properties-common build-essential curl git
           #add-apt-repository ppa:deadsnakes/ppa -y
           apt-get update
-          apt-get install -y --no-install-recommends python${{ matrix.python-version }} python${{ matrix.python-version }}-distutils python3-pip
+          apt-get install -y --no-install-recommends python${{ matrix.python-version }} python3-pip
 
           # Use the selected python
           ln -sf /usr/bin/python${{ matrix.python-version }} /usr/local/bin/python
