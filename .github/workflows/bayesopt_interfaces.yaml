@@ -72,13 +72,6 @@ jobs:
       image: ubuntu:20.04
     env:
       DEBIAN_FRONTEND: noninteractive
-    #strategy:
-    #  matrix:
-    #    container-image: [ubuntu:20.04, python:2.7.18-buster]
-    #    python-version: ['2.7']
-    #container:
-    #  image: ${{ matrix.container-image }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -97,8 +90,8 @@ jobs:
           python -m pip --version
       - name: Install dependencies (for combo)
         run: |
-          # for Tkinter
-          apt-get install -y tk-dev libtcl-dev libffi-dev
+          ## for Tkinter
+          #apt-get install -y tk-dev libtcl-dev libffi-dev
 
           python -m pip install pytest cython numpy
       - name: Install combo
