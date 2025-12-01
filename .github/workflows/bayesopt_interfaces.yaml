@@ -68,21 +68,26 @@ jobs:
     name: Run tests for combo_interface
     runs-on: ubuntu-latest
     container:
-        image: ubuntu:20.04
-    strategy:
-      matrix:
-        python-version: ['2.7']
+      image: ubuntu:20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    #strategy:
+    #  matrix:
+    #    container-image: [ubuntu:20.04, python:2.7.18-buster]
+    #    python-version: ['2.7']
+    #container:
+    #  image: ${{ matrix.container-image }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install system deps (for Python builds)
         run: |
-          export DEBIAN_FRONTEND=noninteractive
           apt-get update
           apt-get install -y build-essential
-          apt-get install -y --no-install-recommends python${{ matrix.python-version }} python${{ matrix.python-version }}-dev python-pip
+          apt-get install -y --no-install-recommends python2 python2-dev python2-distutils
           # Use the selected python
-          ln -sf /usr/bin/python${{ matrix.python-version }} /usr/local/bin/python
+          ln -sf /usr/bin/python2 /usr/local/bin/python
           ln -sf /usr/bin/pip /usr/local/bin/pip
           python --version
           pip --version
